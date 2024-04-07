@@ -9,6 +9,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import { ThemeProvider } from "./components/theme-provider"
 import { Auth } from "./pages/auth"
 import { Layout } from "./components/layout"
+import { AuthGuard } from "./features/authGuard"
+import { UserProfile } from "./pages/user-profile"
 
 const container = document.getElementById("root")
 
@@ -20,6 +22,12 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    children: [
+      {
+        path: "users/:id",
+        element: <UserProfile />,
+      },
+    ],
   },
 ])
 
@@ -29,11 +37,13 @@ if (container) {
   root.render(
     <React.StrictMode>
       <Provider store={store}>
-        <ThemeProvider>
-          <NextUIProvider>
-            <RouterProvider router={router} />
-          </NextUIProvider>
-        </ThemeProvider>
+        <NextUIProvider>
+          <ThemeProvider>
+            <AuthGuard>
+              <RouterProvider router={router} />
+            </AuthGuard>
+          </ThemeProvider>
+        </NextUIProvider>
       </Provider>
     </React.StrictMode>,
   )
