@@ -11,6 +11,7 @@ import { Auth } from "./pages/auth"
 import { Layout } from "./components/layout"
 import { AuthGuard } from "./features/authGuard"
 import { UserProfile } from "./pages/user-profile"
+import { Posts } from "./pages/posts"
 
 const container = document.getElementById("root")
 
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "users/:id",
         element: <UserProfile />,
+      },
+      {
+        path: "posts",
+        element: <Posts />,
       },
     ],
   },

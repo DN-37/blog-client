@@ -10,3 +10,13 @@ export type User = {
   bio?: string
   location?: string
 }
+
+export type Post = {
+  id: string
+  content: string
+  author: User
+  authorId: string
+  likedByUser: boolean
+  createdAt: Date
+  updatedAt: Date
+}

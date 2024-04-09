@@ -9,7 +9,7 @@ export const NavBar: React.FC = () => {
     <nav>
       <ul className="flex flex-col gap-5">
         <li>
-          <NavButton href="/" icon={<BsPostcard />}>
+          <NavButton href="/posts" icon={<BsPostcard />}>
             Посты
           </NavButton>
         </li>
