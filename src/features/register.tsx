@@ -80,7 +80,7 @@ export const Register = ({ setSelected }: Props) => {
         </Link>
       </p>
       <div className="flex gap-2 justify-end">
-        <Button fullWidth color="primary" type="submit">
+        <Button fullWidth color="primary" type="submit" size="lg" radius="full">
           Зарегистрироваться
         </Button>
       </div>

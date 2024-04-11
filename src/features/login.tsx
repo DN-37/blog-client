@@ -52,7 +52,7 @@ export const Login = ({ setSelected }: Props) => {
         control={control}
         name="email"
         label="Email"
-        type="email"
+        type="text"
         required="Обязательное поле"
       />
       <Input

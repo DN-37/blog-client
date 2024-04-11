@@ -51,3 +51,7 @@ export default slice.reducer
 
 export const selectIsAuthenticated = (state: RootState) =>
   state.auth.isAuthenticated
+
+export const selectCurrent = (state: RootState) => state.auth.current
+
+export const selectUser = (state: RootState) => state.auth.user
