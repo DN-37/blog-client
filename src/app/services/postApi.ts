@@ -1,4 +1,4 @@
-import { Post } from "../types"
+import { Post, Posts } from "../types"
 import { api } from "./api"
 
 export const postApi = api.injectEndpoints({
@@ -10,9 +10,9 @@ export const postApi = api.injectEndpoints({
         body: postData,
       }),
     }),
-    getAllPosts: builder.query<Post[], void>({
-      query: () => ({
-        url: "/posts",
+    getAllPosts: builder.query<Posts, { page: number; count: string }>({
+      query: ({ page = 1, count = "2" }) => ({
+        url: `/posts?page=${page}&count=${count}`,
         method: "GET",
       }),
     }),
