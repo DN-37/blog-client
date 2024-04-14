@@ -103,6 +103,8 @@ export const Posts = () => {
                 likedByUser={likedByUser}
                 createdAt={createdAt}
                 cardFor="post"
+                page={page}
+                count={count}
               />
             ),
           )
