@@ -7,7 +7,13 @@ import {
 import { useForm, Controller } from "react-hook-form"
 import { ErrorMessage } from "../error-message"
 
-export const CreatePost = () => {
+type Props = {
+  page: number
+  count: string
+  filter: string
+}
+
+export const CreatePost = ({ page, count, filter }: Props) => {
   const [createPost] = useCreatePostMutation()
   const [triggerGetAllPosts] = useLazyGetAllPostsQuery()
   const {
@@ -21,7 +27,7 @@ export const CreatePost = () => {
     try {
       await createPost({ content: data.post }).unwrap()
       setValue("post", "")
-      await triggerGetAllPosts().unwrap()
+      await triggerGetAllPosts({ page, count, filter }).unwrap()
     } catch (error) {
       console.log("err", error)
     }

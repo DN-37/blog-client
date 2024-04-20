@@ -38,6 +38,7 @@ type Props = {
   likedByUser?: boolean
   page: number
   count: string
+  filter: string
 }
 
 export const Card = ({
@@ -54,6 +55,7 @@ export const Card = ({
   commentId = "",
   page = 1,
   count = "2",
+  filter = "",
 }: Props) => {
   const [triggerGetAllPosts] = useLazyGetAllPostsQuery()
   const [deletePost, deletePostStatus] = useDeletePostMutation()
@@ -64,10 +66,10 @@ export const Card = ({
   const refetchPosts = async () => {
     switch (cardFor) {
       case "post":
-        await triggerGetAllPosts({ page, count }).unwrap()
+        await triggerGetAllPosts({ page, count, filter }).unwrap()
         break
       case "current-post":
-        await triggerGetAllPosts({ page, count }).unwrap()
+        await triggerGetAllPosts({ page, count, filter }).unwrap()
         break
       default:
         throw new Error("Неверный аргумент cardFor")

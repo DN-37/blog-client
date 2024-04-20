@@ -3,40 +3,18 @@ import { CreatePost } from "../../components/create-post"
 import { useGetAllPostsQuery } from "../../app/services/postApi"
 import { Button, Select, SelectItem } from "@nextui-org/react"
 import React from "react"
-import { selectCurrent } from "../../features/userSlice"
-import { useSelector } from "react-redux"
 import ReactPaginate from "react-paginate"
 
 export const Posts = () => {
   const [filter, setFilter] = React.useState("")
   const [page, setPage] = React.useState(1)
   const [count, setCount] = React.useState("2")
-  let { data } = useGetAllPostsQuery({ page, count })
-
-  let user = useSelector(selectCurrent)
-
-  if (data) {
-    if (filter === "my") {
-      // data.posts = data.posts.filter(item => item.authorId === user?.id)
-      data = {
-        pageCount: data.pageCount,
-        page: data.page,
-        posts: data.posts.filter(item => item.authorId === user?.id),
-      }
-    } else if (filter === "enemy") {
-      // data.posts = data.posts.filter(item => item.authorId !== user?.id)
-      data = {
-        pageCount: data.pageCount,
-        page: data.page,
-        posts: data.posts.filter(item => item.authorId !== user?.id),
-      }
-    }
-  }
+  let { data } = useGetAllPostsQuery({ page, count, filter })
 
   return (
     <>
       <div className="mb-10 w-full flex">
-        <CreatePost />
+        <CreatePost page={page} count={count} filter={filter} />
       </div>
       <div className="mb-10 flex w-full flex-wrap md:flex-nowrap gap-4">
         <Select
@@ -105,6 +83,7 @@ export const Posts = () => {
                 cardFor="post"
                 page={page}
                 count={count}
+                filter={filter}
               />
             ),
           )
