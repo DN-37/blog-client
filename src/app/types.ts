@@ -20,3 +20,9 @@ export type Post = {
   createdAt: Date
   updatedAt: Date
 }
+
+export type Posts = {
+  posts: Post[]
+  page: number
+  pageCount: number
+}

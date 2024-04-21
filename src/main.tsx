@@ -12,6 +12,7 @@ import { Layout } from "./components/layout"
 import { AuthGuard } from "./features/authGuard"
 import { UserProfile } from "./pages/user-profile"
 import { Posts } from "./pages/posts"
+import { CurrentPost } from "./pages/current-post"
 
 const container = document.getElementById("root")
 
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "posts",
         element: <Posts />,
+      },
+      {
+        path: "posts/:id",
+        element: <CurrentPost />,
       },
     ],
   },

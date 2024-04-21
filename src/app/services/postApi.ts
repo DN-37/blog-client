@@ -1,4 +1,4 @@
-import { Post } from "../types"
+import { Post, Posts } from "../types"
 import { api } from "./api"
 
 export const postApi = api.injectEndpoints({
@@ -10,9 +10,24 @@ export const postApi = api.injectEndpoints({
         body: postData,
       }),
     }),
-    getAllPosts: builder.query<Post[], void>({
-      query: () => ({
-        url: "/posts",
+    getAllPosts: builder.query<
+      Posts,
+      { page: number; count: string; filter: string }
+    >({
+      query: ({ page = 1, count = "2", filter = "my" }) => ({
+        url: `/posts?page=${page}&count=${count}&filter=${filter}`,
+        method: "GET",
+      }),
+    }),
+    deletePost: builder.mutation<void, string>({
+      query: id => ({
+        url: `/posts/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    getPostById: builder.query<Post, string>({
+      query: id => ({
+        url: `/posts/${id}`,
         method: "GET",
       }),
     }),
@@ -22,9 +37,12 @@ export const postApi = api.injectEndpoints({
 export const {
   useCreatePostMutation,
   useGetAllPostsQuery,
+  useGetPostByIdQuery,
+  useDeletePostMutation,
   useLazyGetAllPostsQuery,
+  useLazyGetPostByIdQuery,
 } = postApi
 
 export const {
-  endpoints: { createPost, getAllPosts },
+  endpoints: { createPost, getAllPosts, getPostById, deletePost },
 } = postApi
