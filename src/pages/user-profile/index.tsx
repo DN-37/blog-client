@@ -1,21 +1,36 @@
 import { useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { useGetUserByIdQuery } from "../../app/services/userApi"
+import {
+  useGetUserByIdQuery,
+  useLazyCurrentQuery,
+  useLazyGetUserByIdQuery,
+} from "../../app/services/userApi"
 import { useDispatch, useSelector } from "react-redux"
 import { resetUser, selectCurrent } from "../../features/userSlice"
 import { Button, Card, Image } from "@nextui-org/react"
 import { MdOutlinePersonAddAlt1 } from "react-icons/md"
 import { MdOutlinePersonAddDisabled } from "react-icons/md"
+import { useDisclosure } from "@nextui-org/react"
+import {
+  useFollowUserMutation,
+  useUnfollowUserMutation,
+} from "../../app/services/followApi"
 import { GoBack } from "../../components/go-back"
 import { BASE_URL } from "../../constant"
 import { CiEdit } from "react-icons/ci"
+import { EditProfile } from "../../components/edit-profile"
 import { formatToClientDate } from "../../utils/format-to-client"
 import { ProfileInfo } from "../../components/profile-info"
 
 export const UserProfile = () => {
   const { id } = useParams<{ id: string }>()
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const currentUser = useSelector(selectCurrent)
   const { data } = useGetUserByIdQuery(id ?? "")
+  const [followUser] = useFollowUserMutation()
+  const [unfolowUser] = useUnfollowUserMutation()
+  const [triggerGetUserByIdQuery] = useLazyGetUserByIdQuery()
+  const [triggerCurrentQuery] = useLazyCurrentQuery()
 
   const dispatch = useDispatch()
 
@@ -25,6 +40,34 @@ export const UserProfile = () => {
     },
     [],
   )
+
+  const handleFollow = async () => {
+    try {
+      if (id) {
+        data?.isFollowing
+          ? await unfolowUser(id).unwrap()
+          : await followUser({ followingId: id }).unwrap()
+
+        await triggerGetUserByIdQuery(id)
+
+        await triggerCurrentQuery()
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleClose = async () => {
+    try {
+      if (id) {
+        await triggerGetUserByIdQuery(id)
+        await triggerCurrentQuery()
+        onClose()
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   if (!data) {
     return null
@@ -49,6 +92,7 @@ export const UserProfile = () => {
                 color={data?.isFollowing ? "default" : "primary"}
                 variant="flat"
                 className="gap-2"
+                onClick={handleFollow}
                 endContent={
                   data?.isFollowing ? (
                     <MdOutlinePersonAddDisabled />
@@ -60,7 +104,9 @@ export const UserProfile = () => {
                 {data?.isFollowing ? "Отписаться" : "Подписаться"}
               </Button>
             ) : (
-              <Button endContent={<CiEdit />}>Редактировать</Button>
+              <Button endContent={<CiEdit />} onClick={() => onOpen()}>
+                Редактировать
+              </Button>
             )}
           </div>
         </Card>
@@ -74,6 +120,7 @@ export const UserProfile = () => {
           <ProfileInfo title="Обо мне:" info={data.bio} />
         </Card>
       </div>
+      <EditProfile isOpen={isOpen} onClose={handleClose} user={data} />
     </>
   )
 }
