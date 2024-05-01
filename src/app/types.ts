@@ -9,6 +9,7 @@ export type User = {
   updatedAt: Date
   bio?: string
   location?: string
+  isFollowing?: boolean
 }
 
 export type Post = {
