@@ -10,6 +10,7 @@ export type User = {
   bio?: string
   location?: string
   isFollowing?: boolean
+  following: Follows[]
 }
 
 export type Post = {
@@ -26,4 +27,12 @@ export type Posts = {
   posts: Post[]
   page: number
   pageCount: number
+}
+
+export type Follows = {
+  id: string
+  follower: User
+  followerId: string
+  following: User
+  followingId: string
 }

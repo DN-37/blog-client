@@ -1,7 +1,6 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
 import { Provider } from "react-redux"
-import App from "./App"
 import { store } from "./app/store"
 import "./index.css"
 import { NextUIProvider } from "@nextui-org/react"
@@ -13,6 +12,7 @@ import { AuthGuard } from "./features/authGuard"
 import { UserProfile } from "./pages/user-profile"
 import { Posts } from "./pages/posts"
 import { CurrentPost } from "./pages/current-post"
+import { Following } from "./pages/following"
 
 const container = document.getElementById("root")
 
@@ -36,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "posts/:id",
         element: <CurrentPost />,
+      },
+      {
+        path: "following",
+        element: <Following />,
       },
     ],
   },
