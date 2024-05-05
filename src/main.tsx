@@ -13,6 +13,7 @@ import { UserProfile } from "./pages/user-profile"
 import { Posts } from "./pages/posts"
 import { CurrentPost } from "./pages/current-post"
 import { Following } from "./pages/following"
+import { Followers } from "./pages/followers"
 
 const container = document.getElementById("root")
 
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "following",
         element: <Following />,
+      },
+      {
+        path: "followers",
+        element: <Followers />,
       },
     ],
   },

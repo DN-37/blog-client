@@ -19,7 +19,7 @@ export const NavBar: React.FC = () => {
           </NavButton>
         </li>
         <li>
-          <NavButton href="/" icon={<FaUsers />}>
+          <NavButton href="/followers" icon={<FaUsers />}>
             Подписчики
           </NavButton>
         </li>

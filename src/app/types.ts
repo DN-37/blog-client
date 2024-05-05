@@ -11,6 +11,7 @@ export type User = {
   location?: string
   isFollowing?: boolean
   following: Follows[]
+  followers: Follows[]
 }
 
 export type Post = {
