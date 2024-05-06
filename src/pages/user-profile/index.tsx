@@ -21,6 +21,7 @@ import { CiEdit } from "react-icons/ci"
 import { EditProfile } from "../../components/edit-profile"
 import { formatToClientDate } from "../../utils/format-to-client"
 import { ProfileInfo } from "../../components/profile-info"
+import { CountInfo } from "../../components/count-info"
 
 export const UserProfile = () => {
   const { id } = useParams<{ id: string }>()
@@ -118,6 +119,11 @@ export const UserProfile = () => {
             info={formatToClientDate(data.dateOfBirth)}
           />
           <ProfileInfo title="Обо мне:" info={data.bio} />
+
+          <div className="flex gap-2">
+            <CountInfo count={data.followers.length} title="Подписчики" />
+            <CountInfo count={data.following.length} title="Подписки" />
+          </div>
         </Card>
       </div>
       <EditProfile isOpen={isOpen} onClose={handleClose} user={data} />
