@@ -12,6 +12,7 @@ export type User = {
   isFollowing?: boolean
   following: Follows[]
   followers: Follows[]
+  comments: Comment[]
 }
 
 export type Post = {
@@ -22,6 +23,7 @@ export type Post = {
   likedByUser: boolean
   createdAt: Date
   updatedAt: Date
+  comments: Comment[]
 }
 
 export type Posts = {
@@ -36,4 +38,13 @@ export type Follows = {
   followerId: string
   following: User
   followingId: string
+}
+
+export type Comment = {
+  id: string
+  content: string
+  user: User
+  userId: string
+  post: Post
+  postId: string
 }
