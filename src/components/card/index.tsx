@@ -13,6 +13,7 @@ import { FaRegComment } from "react-icons/fa6"
 import {
   useDeletePostMutation,
   useLazyGetAllPostsQuery,
+  useLazyGetPostByIdQuery,
 } from "../../app/services/postApi"
 import { FcDislike } from "react-icons/fc"
 import { MdOutlineFavoriteBorder } from "react-icons/md"
@@ -23,6 +24,7 @@ import { ErrorMessage } from "../error-message"
 import { useState } from "react"
 import { hasErrorField } from "../../utils/has-error-field"
 import { RiDeleteBinLine } from "react-icons/ri"
+import { useDeleteCommentMutation } from "../../app/services/commentApi"
 
 type Props = {
   avatarUrl: string
@@ -58,7 +60,9 @@ export const Card = ({
   filter = "",
 }: Props) => {
   const [triggerGetAllPosts] = useLazyGetAllPostsQuery()
+  const [triggerGetPostById] = useLazyGetPostByIdQuery()
   const [deletePost, deletePostStatus] = useDeletePostMutation()
+  const [deleteComment, deleteCommentStatus] = useDeleteCommentMutation()
   const [error, setError] = useState("")
   const navigate = useNavigate()
   const currentUser = useSelector(selectCurrent)
@@ -70,6 +74,9 @@ export const Card = ({
         break
       case "current-post":
         await triggerGetAllPosts({ page, count, filter }).unwrap()
+        break
+      case "comment":
+        await triggerGetPostById(id).unwrap()
         break
       default:
         throw new Error("Неверный аргумент cardFor")
@@ -99,6 +106,10 @@ export const Card = ({
           await deletePost(id).unwrap()
           navigate("/")
           break
+        case "comment":
+          await deleteComment(commentId).unwrap()
+          await refetchPosts()
+          break
         default:
           throw new Error("Неверный аргумент cardFor")
       }
@@ -125,7 +136,11 @@ export const Card = ({
         </Link>
         {authorId === currentUser?.id && (
           <div className="cursor-pointer" onClick={handleDelete}>
-            {deletePostStatus.isLoading ? <Spinner /> : <RiDeleteBinLine />}
+            {deletePostStatus.isLoading || deleteCommentStatus.isLoading ? (
+              <Spinner />
+            ) : (
+              <RiDeleteBinLine />
+            )}
           </div>
         )}
       </CardHeader>
