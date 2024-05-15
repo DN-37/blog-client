@@ -25,6 +25,7 @@ import { useState } from "react"
 import { hasErrorField } from "../../utils/has-error-field"
 import { RiDeleteBinLine } from "react-icons/ri"
 import { useDeleteCommentMutation } from "../../app/services/commentApi"
+import { useLikePostMutation } from "../../app/services/likesApi"
 
 type Props = {
   avatarUrl: string
@@ -59,6 +60,7 @@ export const Card = ({
   count = "2",
   filter = "",
 }: Props) => {
+  const [likePost] = useLikePostMutation()
   const [triggerGetAllPosts] = useLazyGetAllPostsQuery()
   const [triggerGetPostById] = useLazyGetPostByIdQuery()
   const [deletePost, deletePostStatus] = useDeletePostMutation()
@@ -85,6 +87,8 @@ export const Card = ({
 
   const handleClick = async () => {
     try {
+      await likePost({ postId: id }).unwrap()
+
       await refetchPosts()
     } catch (err) {
       if (hasErrorField(err)) {
