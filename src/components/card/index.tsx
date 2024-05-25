@@ -25,7 +25,10 @@ import { useState } from "react"
 import { hasErrorField } from "../../utils/has-error-field"
 import { RiDeleteBinLine } from "react-icons/ri"
 import { useDeleteCommentMutation } from "../../app/services/commentApi"
-import { useLikePostMutation } from "../../app/services/likesApi"
+import {
+  useLikePostMutation,
+  useUnlikePostMutation,
+} from "../../app/services/likesApi"
 
 type Props = {
   avatarUrl: string
@@ -61,6 +64,7 @@ export const Card = ({
   filter = "",
 }: Props) => {
   const [likePost] = useLikePostMutation()
+  const [unlikePost] = useUnlikePostMutation()
   const [triggerGetAllPosts] = useLazyGetAllPostsQuery()
   const [triggerGetPostById] = useLazyGetPostByIdQuery()
   const [deletePost, deletePostStatus] = useDeletePostMutation()
@@ -75,7 +79,7 @@ export const Card = ({
         await triggerGetAllPosts({ page, count, filter }).unwrap()
         break
       case "current-post":
-        await triggerGetAllPosts({ page, count, filter }).unwrap()
+        await triggerGetPostById(id).unwrap()
         break
       case "comment":
         await triggerGetPostById(id).unwrap()
@@ -87,7 +91,9 @@ export const Card = ({
 
   const handleClick = async () => {
     try {
-      await likePost({ postId: id }).unwrap()
+      likedByUser
+        ? await unlikePost(id).unwrap()
+        : await likePost({ postId: id }).unwrap()
 
       await refetchPosts()
     } catch (err) {

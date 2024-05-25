@@ -13,6 +13,7 @@ export type User = {
   following: Follows[]
   followers: Follows[]
   comments: Comment[]
+  likes: Like[]
 }
 
 export type Post = {
@@ -24,6 +25,7 @@ export type Post = {
   createdAt: Date
   updatedAt: Date
   comments: Comment[]
+  likes: Like[]
 }
 
 export type Posts = {
