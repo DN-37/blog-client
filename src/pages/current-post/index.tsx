@@ -12,7 +12,16 @@ export const CurrentPost = () => {
     return <h2>Поста не существует</h2>
   }
 
-  const { content, id, authorId, author, likedByUser, createdAt } = data
+  const {
+    content,
+    id,
+    authorId,
+    author,
+    likedByUser,
+    createdAt,
+    comments,
+    likes,
+  } = data
 
   return (
     <>
@@ -29,6 +38,8 @@ export const CurrentPost = () => {
         page={1}
         count={"1"}
         filter={""}
+        likesCount={likes.length}
+        commentsCount={comments?.length}
       />
       <div className="mt-10">
         <CreateComment />

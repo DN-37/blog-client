@@ -70,7 +70,16 @@ export const Posts = () => {
       </div>
       {data?.posts && data.posts.length > 0
         ? data.posts.map(
-            ({ content, author, id, authorId, likedByUser, createdAt }) => (
+            ({
+              content,
+              author,
+              id,
+              authorId,
+              likedByUser,
+              createdAt,
+              comments,
+              likes,
+            }) => (
               <Card
                 key={id}
                 avatarUrl={author.avatarUrl ?? ""}
@@ -84,6 +93,8 @@ export const Posts = () => {
                 page={page}
                 count={count}
                 filter={filter}
+                likesCount={likes.length}
+                commentsCount={comments.length}
               />
             ),
           )
